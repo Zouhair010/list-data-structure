@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class List{
+public class List {
 
     /**
      * A custom implementation of a dynamic array, similar to ArrayList.
@@ -12,8 +12,7 @@ public class List{
         private int tracker; // Tracks the number of elements currently in the list.
         /**
          * Default constructor.
-         * Initializes the list with a starting capacity of 1 if there is no default argument
-         * if not assign the list to default argumment (array of objects)
+         * Initializes the list with a starting capacity of 1 if not assign the list to default argumment (array of objects)
          */
         public DynamicList(Object... args){
             Object[] items = (args.length>0) ? args : null;
@@ -111,18 +110,43 @@ public class List{
         }
         /**
          * Returns the index of the first occurrence of the specified element in this list.
-         * Note: This method uses reference equality (==) for comparison.
-         * @param elem The element to search for.
-         * @return The index of the element, or -1 if it is not found.
+         * @return The index of the element, or null if it is not found.
+         * throws an exception if the index is invalid (out of range)
          */
-        public int indexOf(Object elem){
-            for (int i=0 ; i<tracker ; i++) {
-                if(list[i]==elem){
-                    return i;
+        public Object indexOf(Object elem){
+            try{
+                // iterate through the list to find the element
+                for (int i=0 ; i<tracker ; i++) {
+                    if(list[i].equals(elem)){
+                        // returns the index of the element is found
+                        return i;
+                    }
                 }
+                throw new Exception("the element "+elem+" is not on the list!");
             }
-            // Return -1 if the element was not found in the loop.
-            return -1;
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            // returns null if the element not found
+            return null;
+        }
+        /**
+         * updates an element in the list at a given index
+         *throws an exception if the index is invalid (out of range
+         */
+        public void update(int index, Object elem){
+            try{
+                // check if the given index is outside the valid range
+                if (index>=tracker){
+                    // throws an exception if the index is invalid
+                    throw new IndexOutOfBoundsException("Index "+index+" is out of range!");
+                }
+                // if the index is valid replace the element at that position
+                list[index] = elem;
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         }
     }
     
@@ -139,6 +163,9 @@ public class List{
         list.remove("3");
         list.printData();
         System.out.println(list.indexOf("3"));
+        list.update(8, 0);
         System.out.println(list.len());
+        list.printData();
+        
     }
 }
