@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
 public class List{
+
     /**
      * A custom implementation of a dynamic array, similar to ArrayList.
      * It can store objects of any type and automatically resizes itself when full.
@@ -11,12 +12,14 @@ public class List{
         private int tracker; // Tracks the number of elements currently in the list.
         /**
          * Default constructor.
-         * Initializes the list with a starting capacity of 1.
+         * Initializes the list with a starting capacity of 1 if there is no default argument
+         * if not assign the list to default argumment (array of objects)
          */
-        public ClassList(){
-            ln = 1;
-            list = new Object[ln];
-            tracker = 0;
+        public DynamicList(Object... args){
+            Object[] items = (args.length>0) ? args : null;
+            ln = (items!=null) ? items.length : 1;
+            list = (items!=null) ? items : new Object[ln];
+            tracker = (items!=null) ? items.length :0;
         }
         /**
          * Adds an element to the end of the list.
@@ -24,9 +27,6 @@ public class List{
          * @param elem The object to be added to the list.
          */
         public void add(Object elem){
-            // Add the new element at the next available position.
-            list[tracker] = elem;
-            tracker++;
             // Check if the internal array is now full.
             if (tracker>=ln){
                 // Double the capacity.
@@ -40,6 +40,9 @@ public class List{
                 // Replace the old array with the new, resized array.
                 list = resizedlist;
             }
+            // Add the new element at the next available position.
+            list[tracker] = elem;
+            tracker++;
             // The return statement is redundant for a void method but is harmless.
             return;
         }
@@ -60,9 +63,9 @@ public class List{
             // Iterate through the elements to find the one to remove.
             for (int i=0 ; i<tracker ; i++) {
                 // If the element is found by reference...
-                if(list[i]==elem){
+                if(list[i].equals(elem)){
                     // ...shift all subsequent elements one position to the left to fill the gap.
-                    for (int j=i ; j<tracker ; j++){
+                    for (int j=i ; j<tracker-1 ; j++){
                         list[j] = list[j+1];
                     }
                     // Decrease the element count.
@@ -124,7 +127,7 @@ public class List{
     }
     
     public static void main(String[] args){
-        DynamicList list = new DynamicList();
+        DynamicList list = new DynamicList(new Object[]{1,'2',"3",4,'5'});
         list.add(1);
         list.add("2");
         list.add('3');
