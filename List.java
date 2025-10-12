@@ -1,7 +1,9 @@
 import java.util.Arrays;
-
+//addes toString method that return a string representation of the list.
+//The format is [ element1 , element2 , ... , elementN ]
+// and typeFormat method that returns a string that makes the user distinguish between data tipes 
+//integers without quotes, 'charchters' in the single quotes and "strings" in the double quotes
 public class List {
-
     /**
      * A custom implementation of a dynamic array, similar to ArrayList.
      * It can store objects of any type and automatically resizes itself when full.
@@ -75,30 +77,36 @@ public class List {
             }
         }
         /**
-         * Prints a string representation of the list to the console.
+         * return a string representation of the list.
          * The format is [ element1 , element2 , ... , elementN ].
          */
-        public void printData(){
-            String data = "";
+        @Override
+        public String toString(){
             // Build the string representation of the list.
-            for (int i=0 ; i<tracker ; i++) {
-                // Ternary operators are used to handle the start, middle, and end of the string formatting.
-                String item="";
-                switch (list[i].getClass().getName()) {
+            String[] data = new String[tracker];
+            for(int i=0 ; i<tracker ; i++){
+                data[i] = typeFormat(list[i]);
+            }
+            return String.format("[%s]",String.join(" ,",data));
+        }
+        /**
+         *returns a string that makes the user distinguish between data tipes
+         *integers without quotes, 'charchters' in the single quotes and "strings" in the double quotes
+         */
+        private static String typeFormat(Object item){
+            String string;
+            switch (item.getClass().getName()) {
                     case "java.lang.Character":
-                        item = "\'"+list[i]+"\'";
+                        string = "\'"+item+"\'";
                         break;
                     case "java.lang.String":
-                        item = "\""+list[i]+"\"";
+                        string = "\""+item+"\"";
                         break;
                     default:
-                        item = ""+list[i];
+                        string = ""+item;
                         break;
-                }
-                data = (i==0) ? "[ "+item : data+item ;
-                data = (i<tracker-1) ? data+" , " : data+" ]" ;
             }
-            System.out.println(data);
+            return string;
         }
         /**
          * Returns a safe copy of the internal array containing only the elements in the list.
@@ -148,6 +156,18 @@ public class List {
                 System.out.println(e.getMessage());
             }
         }
+        /**
+         * A method to perform a linear search for an object within an array.
+         * @return true if the object is found, false otherwise.
+         */
+        public boolean contains(Object elem){
+            for (int i=0 ; i<tracker ; i++){
+                if (list[i].equals(elem)){
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     public static void main(String[] args){
@@ -159,13 +179,12 @@ public class List {
         list.add(52);
 
         System.out.println(list.len());
-        list.printData();
+        System.out.println(list);
         list.remove("3");
-        list.printData();
+        System.out.println(list);
         System.out.println(list.indexOf("3"));
         list.update(8, 0);
         System.out.println(list.len());
-        list.printData();
-        
+        System.out.println(list);
     }
 }
